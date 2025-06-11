@@ -24,3 +24,7 @@
 * graphs(chp7)
 * quickly explain what is p and np(like 15 min deal)
 * c++ must knows, make, cmake, lambda, threads, smart pointers, stl iterators
+
+
+## random
+* load balancing
