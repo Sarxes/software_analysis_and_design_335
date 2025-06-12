@@ -353,37 +353,125 @@ any work after any of the rotations are called, because these rotations will adj
 subtrees and later called to check the height balance will find them within the allowed limit.
 A version of insert() that embeds the rotations directly follows:
 ```cpp
-void insert(const Comparable& x, AvlNode*& t) const {
-    if (t == nullptr) {
+void insert(const Comparable& x, AvlNode*& t) const 
+{
+    if (t == nullptr) 
         t = new AvlNode(x, nullptr, nullptr);
-    }
-    else if (x < t->element) {
+    
+    else if (x < t->element) 
+    {
         insert(x, t->left);
-
-        if (height(t->left) - height(t->right) == 2) {
+        
+        //this part finds the A(first unbalanced node from the way up) from image
+        // if x < t->element, that means the first turn was an l 
+        if (height(t->left) - height(t->right) == 2) 
+        {
+            //this part finds the second turn, 
             if (x < t->left->element)
                 LL_rotation(t);
             else
                 LR_rotation(t);
         }
     }
-    else if (t->element < x) {
+
+    //symetric reasoning to above
+    else if (t->element < x) 
+    {
         insert(x, t->right);
 
-        if (height(t->right) - height(t->left) == 2) {
+        if (height(t->right) - height(t->left) == 2) 
+        {
             if (t->right->element < x)
                 RR_rotation(t);
             else
                 RL_rotation(t);
         }
     }
-    else {
+
+    else 
+    {
         // Duplicate; do nothing
     }
 
+    //update height of A
     t->height = std::max(height(t->left), height(t->right)) + 1;
 }
 
+```
+
+## Rotation functions
+```cpp
+
+void LL_rotation(AvlNode*& k2) 
+{
+    AvlNode* k1 = k2->left;
+    k2->left = k1->right;
+    k1->right = k2;
+
+    k2->height = std::max(height(k2->left), height(k2->right)) + 1;
+    k1->height = std::max(height(k1->left), height(k1->right)) + 1;
+
+    k2 = k1;
+}
+
+void RR_rotation(AvlNode*& k2) 
+{
+    AvlNode* k1 = k2->right;
+    k2->right = k1->left;
+    k1->left = k2;
+
+    k2->height = std::max(height(k2->left), height(k2->right)) + 1;
+    k1->height = std::max(height(k1->left), height(k1->right)) + 1;
+
+    k2 = k1;
+}
+
+void LR_rotation(AvlNode*& t) 
+{
+    // RR_rotation(t->left);
+    // LL_rotation(t);
+
+    //or
+    AvlNode* k1 = t->left;
+    AvlNode* k2 = k1->right;
+
+    // Perform rotation
+    k1->right = k2->left;
+    t->left = k2->right;
+    k2->left = k1;
+    k2->right = t;
+
+    // Update heights
+    k1->height = std::max(height(k1->left), height(k1->right)) + 1;
+    t->height = std::max(height(t->left), height(t->right)) + 1;
+    k2->height = std::max(k1->height, t->height) + 1;
+
+    // Move new root into position
+    t = k2;
+}
+
+void RL_rotation(AvlNode*& t) 
+{
+    // LL_rotation(t->right);
+    // RR_rotation(t);
+    //or
+    AvlNode* k1 = t->right;
+    AvlNode* k2 = k1->left;
+
+    // Perform rotation
+    k1->left = k2->right;
+    t->right = k2->left;
+    k2->right = k1;
+    k2->left = t;
+
+    // Update heights
+    k1->height = std::max(height(k1->left), height(k1->right)) + 1;
+    t->height = std::max(height(t->left), height(t->right)) + 1;
+    k2->height = std::max(k1->height, t->height) + 1;
+
+    // Move new root into position
+    t = k2;
+}
 ```
 
 ## Attribution
