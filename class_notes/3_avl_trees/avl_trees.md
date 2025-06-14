@@ -238,20 +238,20 @@ explain the double rotations.
 
 An example of a function to perform the LL rotation follows, assuming that the height() function
 returns -1 when its argument is NULL. It is also assumed that this function is only called if the
-tree rooted at k2 needs an LL rotation. Otherwise there is a chance that a null pointer will be
-dereferenced. If the tree needs an LL rotation at k2, then k2->left is not null, so k2->left->right
+tree rooted at A needs an LL rotation. Otherwise there is a chance that a null pointer will be
+dereferenced. If the tree needs an LL rotation at A, then A->left is not null, so A->left->right
 cannot be a null-pointer dereference. It is also important to observe that the height function used
 in this code returns a -1 if its argument is a null pointer.
 
 ```cpp
-void LL_rotation( AvlNode * & k2 )
+void LL_rotation( AvlNode * & A )
 {
-    AvlNode *k1 = k2->left;
-    k2->left = k1->right;
-    k1->right = k2;
-    k2->height = max( height( k2->left ), height( k2->right ) ) + 1;
-    k1->height = max( height( k1->left ), k2->height ) + 1;
-    k2 = k1;
+    AvlNode *B = A->left;
+    A->left = B->right;
+    B->right = A;
+    A->height = max( height( A->left ), height( A->right ) ) + 1;
+    B->height = max( height( B->left ), A->height ) + 1;
+    A = B;
 }
 ```
 It is not hard to write the RR rotation after examining the above code. 
@@ -402,77 +402,209 @@ void insert(const Comparable& x, AvlNode*& t) const
 ## Rotation functions
 ```cpp
 
-void LL_rotation(AvlNode*& k2) 
+void LL_rotation(AvlNode*& A) 
 {
-    AvlNode* k1 = k2->left;
-    k2->left = k1->right;
-    k1->right = k2;
+    AvlNode* B = A->left;
+    A->left = B->right;
+    B->right = A;
 
-    k2->height = std::max(height(k2->left), height(k2->right)) + 1;
-    k1->height = std::max(height(k1->left), height(k1->right)) + 1;
+    A->height = std::max(height(A->left), height(A->right)) + 1;
+    B->height = std::max(height(B->left), height(B->right)) + 1;
 
-    k2 = k1;
+    A = B;
 }
 
-void RR_rotation(AvlNode*& k2) 
+void RR_rotation(AvlNode*& A) 
 {
-    AvlNode* k1 = k2->right;
-    k2->right = k1->left;
-    k1->left = k2;
+    AvlNode* B = A->right;
+    A->right = B->left;
+    B->left = A;
 
-    k2->height = std::max(height(k2->left), height(k2->right)) + 1;
-    k1->height = std::max(height(k1->left), height(k1->right)) + 1;
+    A->height = std::max(height(A->left), height(A->right)) + 1;
+    B->height = std::max(height(B->left), height(B->right)) + 1;
 
-    k2 = k1;
+    A = B;
 }
 
-void LR_rotation(AvlNode*& t) 
+void LR_rotation(AvlNode*& A) 
 {
     // RR_rotation(t->left);
     // LL_rotation(t);
 
     //or
-    AvlNode* k1 = t->left;
-    AvlNode* k2 = k1->right;
+    ///////////////////////////////////////////////////////////////////////////
+    AvlNode* B = A->left;
+    AvlNode* C = B->right;
 
     // Perform rotation
-    k1->right = k2->left;
-    t->left = k2->right;
-    k2->left = k1;
-    k2->right = t;
+    B->right = C->left;
+    A->left = C->right;
+    C->left = B;
+    C->right = A;
+    ///////////////////////////////////////////////////////////////////////////
 
     // Update heights
-    k1->height = std::max(height(k1->left), height(k1->right)) + 1;
-    t->height = std::max(height(t->left), height(t->right)) + 1;
-    k2->height = std::max(k1->height, t->height) + 1;
+    A->height = std::max(A->left->height,A->right->height) + 1;
+    B->height = std::max(B->left->height,B->right->height) + 1;
+    C->height = std::max(C->left->height,C->right->height) + 1;
 
     // Move new root into position
-    t = k2;
+    A = C;
 }
 
-void RL_rotation(AvlNode*& t) 
+void RL_rotation(AvlNode*& A) 
 {
     // LL_rotation(t->right);
     // RR_rotation(t);
+    
     //or
-    AvlNode* k1 = t->right;
-    AvlNode* k2 = k1->left;
+    ///////////////////////////////////////////////////////////////////////////
+    AvlNode* B = A->right;
+    AvlNode* C = B->left;
 
     // Perform rotation
-    k1->left = k2->right;
-    t->right = k2->left;
-    k2->right = k1;
-    k2->left = t;
+    B->left = C->right;
+    A->right = C->left;
+    C->left = A;
+    C->right = B;
+    ///////////////////////////////////////////////////////////////////////////
 
     // Update heights
-    k1->height = std::max(height(k1->left), height(k1->right)) + 1;
-    t->height = std::max(height(t->left), height(t->right)) + 1;
-    k2->height = std::max(k1->height, t->height) + 1;
+    A->height = std::max(A->left->height,A->right->height) + 1;
+    B->height = std::max(B->left->height,B->right->height) + 1;
+    C->height = std::max(C->left->height,C->right->height) + 1;
 
     // Move new root into position
-    t = k2;
+    A = C;
 }
 ```
+
+
+## Deletion
+deleting from an AVL tree is a bit more involved than insertion, but the core idea is the same:
+
+After performing a standard BST delete, you rebalance the tree on the way back up the recursion, just like after insertion.
+
+### Steps to Delete from an AVL Tree
+#### Step 1: Standard BST Delete
+You first find the node and remove it using normal Binary Search Tree deletion rules:
+
+* Leaf: just remove it.
+* One child: replace with that child.
+* Two children: replace with the in-order successor (or predecessor), then recursively delete that successor.
+
+#### Step 2: Rebalance on the Way Back Up
+After each recursive delete, you update the height of each ancestor node and check its balance factor:
+
+```cpp
+balance = height(left subtree) - height(right subtree)
+```
+If it's outside the allowed range [-1, 1], you perform the appropriate rotation to fix it.
+
+### Which Rotation to Use?
+Just like insertion, you look at the balance factor and the shape of the subtree:
+
+* Left heavy:
+    * If balance(t) > 1:
+        * If balance(t->left) ≥ 0: → LL rotation
+        * If balance(t->left) < 0: → LR rotation
+
+* Right heavy:
+    * If balance(t) < -1:
+        * If balance(t->right) ≤ 0: → RR rotation
+        * If balance(t->right) > 0: → RL rotation
+
+**Unlike insertion, multiple rebalances may be needed up the tree — so deletion may cause more than one rotation on the way up.**
+
+### AVL Delete Function
+```cpp
+remove(const Comparable & x, AvlNode<Comparable>* & t)
+{
+    if (t == NULL)
+        // can't delete from an empty tree
+        return;
+
+    if (x < t->element) {
+        // delete from the left subtree
+        remove(x, t->left);
+
+        // check if the heights of the subtrees are now too different
+        if (height(t->right) - height(t->left) == 2) // unbalanced
+            // right subtree too tall relative to left
+            // Which rotation to use depends on whether the left subtree of the
+            // right subtree is larger, or the right of the right is larger.
+            // If the right is larger we MUST use RR
+            if (height((t->right)->right) >= height((t->right)->left))
+                RR_rotation(t);
+            else
+                RL_rotation(t);
+    }
+    else if (t->element < x) {
+        // delete from the right subtree
+        remove(x, t->right);
+
+        if (height(t->left) - height(t->right) == 2) // unbalanced
+            // left subtree too tall
+            if (height((t->left)->left) >= height((t->left)->right))
+                LL_rotation(t);
+            else
+                LR_rotation(t);
+    }
+    else { // delete this node
+        if ((t->left != NULL) && (t->right != NULL)) { // two non-empty subtrees
+            t->element = findMin(t->right)->element;
+            remove(t->element, t->right);
+
+            if (height(t->left) - height(t->right) == 2) // unbalanced
+                // left subtree too tall
+                if (height((t->left)->left) >= height((t->left)->right))
+                    LL_rotation(t);
+                else
+                    LR_rotation(t);
+        }
+        else {
+            AVLNode<Comparable>* OldNode = t;
+            t = (t->left != NULL) ? t->left : t->right;
+            delete OldNode;
+        }
+    }
+
+    if (NULL != t)
+        t->height = max(height(t->left), height(t->right)) + 1;
+}
+
+```
+
+
+### Example
+Delete 30 from this AVL:
+```markdown
+      40
+     /
+   30
+  /
+20
+Delete 30 → becomes:
+
+
+      40
+     /
+   20
+```
+Balance factor at 40 becomes 1 → still balanced, no rotation needed.
+
+### Important Differences from Insertion
+Insertion leverages two points: 
+1. before any insertion the tree is balanced
+2. insertion can only increase the height by 1 for the unbalanced node A
+
+These two points imply, that the insertion increased the height by 1 for the subtree rooted at A, then the rebalance
+decreases the height of A by 1, thus retaining the height of the tree before insertion. Another important implication from
+these points is that since the tree was balnced before the insertion, after the insertion all unbalanced nodes have in the worst case an imbalance of |2|. 
+
+The main complication with deletion is that it decreases the height of the unbalanced node A by 1, and then our rebalancing algorithms decrement the height by another 1. This means that the rebalancing algorithms solve the balance issue at node A, but may cause imbalances to all its ancestors since the height before deletion was not retained. Lucky for us, the fix isn't too bad since in the worst case we can just rebalance all the ancestors of A(at most has O(log n) ancestors) and our rebalancing algorithms run in O(1). 
+
+
 
 ## Attribution
 This repository contains derivative work based on course materials by Professor Stewart Weiss for CSCI 335 at Hunter College, CUNY, Spring 2019.

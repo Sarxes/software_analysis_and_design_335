@@ -14,17 +14,22 @@
 ## Topics for the midterm (06/18)
 * prelim c++ and math (chp1)
 * Complexity theory (chp2)
-* avl trees and maybe b-trees (chp3)
-* hash maps (chp4), kryptography?
+* avl trees, dfs, bfs(chp3)
+* smart pointers, stl iterators(maybe) (discuss monday)
 
 
 ## Topics for final(07/08)
+* make
+* hash maps (chp4)
 * priority queues (heaps)(chp5)
-* sorting:quik, merge, quik select usages (chp6) (did they do this ? ask)
-* graphs(chp7)
-* quickly explain what is p and np(like 15 min deal)
-* c++ must knows, make, cmake, lambda, threads, smart pointers, stl iterators
+* sorting:quik, merge, quik select usages (chp6)
+* graphs, quick intro to p and np(chp7)
 
 
-## random
+## Potential topics
 * load balancing
+* btrees
+* kryptography
+* cmake
+* lambda
+* threads 
