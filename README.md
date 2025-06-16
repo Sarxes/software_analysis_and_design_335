@@ -1,11 +1,10 @@
 # software_analysis_and_design_335
 
 ## Important dates(in order)
-* project 1 due: 06/10
-* remote class: 06/11
-* Midterm: 06/18(tentative)
+* Midterm: 06/18
 * No classes scheduled: 06/19
 * Final: 07/08
+
 
 ## project ideas
 * project 2 idea: maybe avl tree hash table, cmake/make
@@ -15,7 +14,6 @@
 * prelim c++ and math (chp1)
 * Complexity theory (chp2)
 * avl trees, dfs, bfs(chp3)
-* smart pointers, stl iterators(maybe) (discuss monday)
 
 
 ## Topics for final(07/08)
@@ -32,4 +30,6 @@
 * kryptography
 * cmake
 * lambda
-* threads 
+* threads
+* smnart pointers
+* iterators 

@@ -39,7 +39,7 @@ int AvlTree::height(AvlNode* node) {
     return node == nullptr ? -1 : node->height_;
 }
 
-void AvlTree::insert(const Comparable& x, AvlNode*& t) const 
+void AvlTree::insert(const int& x, AvlNode*& t) const 
 {
     if (t == nullptr) 
         t = new AvlNode(x, nullptr, nullptr);
@@ -67,7 +67,7 @@ void AvlTree::insert(const Comparable& x, AvlNode*& t) const
 
         if (height(t->right) - height(t->left) == 2) 
         {
-            if (t->right->data < x)
+            if (t->right->data > x)
                 RR_rotation(t);
             else
                 RL_rotation(t);
@@ -132,13 +132,24 @@ void AvlTree::remove (const int& x , AvlNode*& t)
         else 
         {
             AvlNode* OldNode = t;
-            t=(t->left!=NULL)?t->left:t->right;
+            t=(t->left!=nullptr)?t->left:t->right;
             delete OldNode ;
         }
     }
     //update height
     if(nullptr!=t)
         t->height = max(height(t->left),height(t->right))+1;
+}
+
+
+
+Node* AvlTree::findMin(Node* start)
+{
+    if(!start) return nullptr;
+    
+    while(start->left_) start=start->left_;
+
+    return start;
 }
 
 

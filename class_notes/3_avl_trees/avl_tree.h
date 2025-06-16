@@ -37,6 +37,7 @@ public:
     void insert(int val);
     void remove(int val);
     void printInOrder();
+    Node* findMin(Node* start);
 };
 
 #endif
