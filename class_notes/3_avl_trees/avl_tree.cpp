@@ -39,21 +39,21 @@ int AvlTree::height(AvlNode* node) {
     return node == nullptr ? -1 : node->height_;
 }
 
-AvlTree::void insert(const Comparable& x, AvlNode*& t) const 
+void AvlTree::insert(const Comparable& x, AvlNode*& t) const 
 {
     if (t == nullptr) 
         t = new AvlNode(x, nullptr, nullptr);
     
-    else if (x < t->element) 
+    else if (x < t->data) 
     {
         insert(x, t->left);
         
         //this part finds the A(first unbalanced node from the way up) from image
-        // if x < t->element, that means the first turn was an l 
+        // if x < t->data, that means the first turn was an l 
         if (height(t->left) - height(t->right) == 2) 
         {
             //this part finds the second turn, 
-            if (x < t->left->element)
+            if (x < t->left->data)
                 LL_rotation(t);
             else
                 LR_rotation(t);
@@ -61,13 +61,13 @@ AvlTree::void insert(const Comparable& x, AvlNode*& t) const
     }
 
     //symetric reasoning to above
-    else if (t->element < x) 
+    else if (t->data < x) 
     {
         insert(x, t->right);
 
         if (height(t->right) - height(t->left) == 2) 
         {
-            if (t->right->element < x)
+            if (t->right->data < x)
                 RR_rotation(t);
             else
                 RL_rotation(t);
@@ -84,64 +84,63 @@ AvlTree::void insert(const Comparable& x, AvlNode*& t) const
 }
 
 
-remove ( const Comparable & x , AvlNode < Comparable > * & t )
+void AvlTree::remove (const int& x , AvlNode*& t)
 {
-if ( t == NULL )
-// can 't delete from an empty tree
-return ;
-if ( x < t - > element ) {
-// delete from the left subtree
-This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. 12
-CSci 335 Software Design and Analysis 3
-Chapter 4 Trees, Part 2
-Prof. Stewart Weiss
-remove ( x , t - > left ) ;
-// check if the heights of the subtrees are now too different
-if ( height ( t - > right ) - height ( t - > left ) == 2 ) // unbalanced
-// right subtree too tall relative to left
-// Which rotation to use depends on whether the left subtree
-of the
-// right subtree is larger , or the right of the right is
-larger .
-// If the right is larger we MUST use RR
-if ( height (( t - > right ) -> right ) >= height (( t - > right ) -> left ) )
-RR_rotation ( t ) ;
-else
-RL_rotation ( t ) ;
-}
-else if ( t - > element < x ) {
-// delete from the right subtree
-remove ( x , t - > right ) ;
-if ( height ( t - > left ) - height ( t - > right ) == 2 ) // unbalanced
-// left subtree too tall
-if ( height (( t - > left ) -> left ) >= height (( t - > left ) -> right ) )
-LL_rotation ( t ) ;
-else
-LR_rotation ( t ) ;
-}
-else { // delete this node
-if (( t - > left != NULL ) && (t - > right != NULL ) ) { // two non - empty
-subtrees
-t - > element = findMin (t - > right ) -> element ;
-remove (t - > element , t - > right ) ;
-if ( height ( t - > left ) - height ( t - > right ) == 2 ) //
-unbalanced
-// left subtree too tall
-if ( height (( t - > left ) -> left ) >= height (( t - > left ) -> right ) )
-LL_rotation ( t ) ;
-else
-LR_rotation ( t ) ;
-}
-else {
-AVLNode < Comparable >* OldNode = t ;
-t = (t - > left != NULL ) ? t - > left : t - > right ;
-delete OldNode ;
-}
-}
-if ( NULL != t )
-t - > height = max ( height ( t - > left ) , height ( t - > right ) ) + 1;
+    if(t==NULL) return ; // can 't delete from an empty tree
+    
+    if(x<t->data) 
+    {
+        // delete from the left subtree
+        remove(x,t->left);
+        // check if the heights of the subtrees are now too different
+        if (height(t->right) - height(t->left)==2) // unbalanced
+        {
+            if(height((t->right)->right)>=height((t->right)->left))
+                RR_rotation(t);
+            else RL_rotation(t);
+        }
+    }
+    
+    else if(t->data<x) 
+    {
+        // delete from the right subtree
+        remove(x,t->right);
+        if (height(t->left) - height(t->right)==2) // unbalanced
+        {
+            // left subtree too tall
+            if(height((t->left)->left) >= height ((t->left)->right))
+                LL_rotation(t);
+            else LR_rotation(t);
+        }
+    }
 
+    else 
+    { // delete this node
+        if((t->left != nullptr) && (t->right != nullptr))//two children
+        { 
+            // two non - emptysubtrees
+            t->data = findMin(t->right)->data ;
+            remove(t->data,t->right);
+            if(height(t->left)-height(t->right)==2)
+            {
+             // unbalanced left subtree too tall
+                if(height((t->left)->left)>=height((t->left)->right))
+                    LL_rotation(t);
+                else LR_rotation(t);
+            }
+        }
+        else 
+        {
+            AvlNode* OldNode = t;
+            t=(t->left!=NULL)?t->left:t->right;
+            delete OldNode ;
+        }
+    }
+    //update height
+    if(nullptr!=t)
+        t->height = max(height(t->left),height(t->right))+1;
 }
+
 
 void AvlTree::LL_rotation(AvlNode*& A) {
     AvlNode* B = A->left_;
