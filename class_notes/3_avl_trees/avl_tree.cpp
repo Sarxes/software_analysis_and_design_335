@@ -86,7 +86,7 @@ void AvlTree::insert(const int& x, AvlNode*& t) const
 
 void AvlTree::remove (const int& x , AvlNode*& t)
 {
-    if(t==NULL) return ; // can 't delete from an empty tree
+    if(t==nullptr) return ; // can 't delete from an empty tree
     
     if(x<t->data) 
     {
