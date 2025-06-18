@@ -1,0 +1,15 @@
+The Great Gatsby,F. Scott Fitzgerald,Fiction
+A Brief History of Time,Stephen Hawking,Science
+1984,George Orwell,Dystopian
+To Kill a Mockingbird,Harper Lee,Fiction
+The Catcher in the Rye,J.D. Salinger,Fiction
+Sapiens,Yuval Noah Harari,History
+The Hobbit,J.R.R. Tolkien,Fantasy
+Pride and Prejudice,Jane Austen,Romance
+The Da Vinci Code,Dan Brown,Thriller
+Thinking, Fast and Slow,Daniel Kahneman,Non-fiction
+Brave New World,Aldous Huxley,Dystopian
+Moby-Dick,Herman Melville,Adventure
+The Alchemist,Paulo Coelho,Philosophical Fiction
+Clean Code,Robert C. Martin,Software Engineering
+Dune,Frank Herbert,Science Fiction

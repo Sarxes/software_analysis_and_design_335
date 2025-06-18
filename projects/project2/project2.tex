@@ -1,0 +1,127 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{titlesec}
+
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Software Analysis and Design III}
+\lhead{CS335}
+\rfoot{Page \thepage}
+
+\title{\textbf{Assignment: Hash Table with AVL Tree Chaining}}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Objective}
+The goal of this assignment is to help you understand how to implement a hash table with separate chaining using \textbf{AVL trees} instead of linked lists. You will then use the hash table in a real-world application involving a \textbf{library book catalog system}.
+
+\section*{Part 1: Data Structure Implementation}
+
+\subsection*{Description}
+Implement a hash table in C++ where:
+\begin{itemize}
+  \item Each bucket uses an \textbf{AVL tree} for collision resolution.
+  \item Keys are \texttt{std::string} (e.g., book titles or ISBNs).
+  \item The AVL tree supports efficient operations in $\mathcal{O}(\log n)$ time per bucket.
+\end{itemize}
+
+\subsection*{Requirements}
+\begin{enumerate}
+  \item \textbf{AVL Tree}:
+    \begin{itemize}
+      \item Self-balancing binary search tree.
+      \item Implement insertion, search and deletion.
+      \item Each node stores a key-value pair (\texttt{std::string}, \texttt{std::string}).
+    \end{itemize}
+  \item \textbf{Hash Table}:
+    \begin{itemize}
+      \item Fixed-size array of AVL tree pointers.
+      \item String hash function (e.g., polynomial rolling hash or \texttt{std::hash}).
+      \item Public operations:
+        \begin{itemize}
+          \item \texttt{void insert(const std::string\& key, const std::string\& value);}
+          \item \texttt{std::string* search(const std::string\& key);}
+          \item \texttt{void delete(const std::string\& key);}
+          \item \texttt{void display();} — show table contents by bucket.
+        \end{itemize}
+    \end{itemize}
+\end{enumerate}
+
+\section*{Part 2: Application — Library Book Catalog}
+
+\subsection*{Scenario}
+You are building a system to store and retrieve book information by title using your hash table.
+
+\subsection*{Requirements}
+\begin{itemize}
+  \item Each book has:
+    \begin{itemize}
+      \item Title (string) — used as the key.
+      \item Author (string)
+      \item Genre (string)
+    \end{itemize}
+  \item Store book data in the hash table using the title as the key.
+  \item Value format: a combined string of author and genre (e.g., \texttt{F. Scott Fitzgerald - Fiction}).
+  \item Load books from a file named \texttt{books.txt} formatted as:
+\begin{lstlisting}[basicstyle=\ttfamily]
+The Great Gatsby,F. Scott Fitzgerald,Fiction
+A Brief History of Time,Stephen Hawking,Science
+...
+\end{lstlisting}
+  \item Implement a simple console menu:
+\begin{lstlisting}[basicstyle=\ttfamily]
+1. Load books from file
+2. Search for a book by title
+3. Display hash table
+4. Exit
+\end{lstlisting}
+\end{itemize}
+
+\section*{Deliverables}
+\begin{itemize}
+  \item \texttt{AVLTree.h / AVLTree.cpp}
+  \item \texttt{HashTable.h / HashTable.cpp}
+  \item \texttt{main.cpp}
+  \item \texttt{books.txt} (sample file with at least 10 entries)
+  \item \textbf{Report (1 page)} including:
+    \begin{itemize}
+      \item Description of the AVL tree.
+      \item Explanation of integration with the hash table.
+      \item Time and space complexity analysis.
+    \end{itemize}
+\end{itemize}
+
+\section*{Hints}
+\begin{itemize}
+  \item Use AVL tree balancing (LL, RR, LR, RL rotations) to maintain height.
+  \item Balance factor = height(left) - height(right).
+  \item Use \texttt{std::hash<std::string>} for simple hashing.
+\end{itemize}
+
+\section*{Grading Criteria}
+
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Component} & \textbf{Points} \\
+\hline
+AVL Tree Implementation & 25 \\
+Hash Table Implementation & 20 \\
+File I/O and Integration & 15 \\
+Search Functionality & 10 \\
+Display Function & 10 \\
+Code Quality \& Documentation & 10 \\
+Report & 10 \\
+\hline
+\end{tabular}
+
+
+\end{document}
