@@ -1,7 +1,8 @@
 # software_analysis_and_design_335
 
 ## Important dates(in order)
-* project 2 due 07/02
+* Too hot so remote class: 06/24 
+* project 2: 07/02
 * Final: 07/08
 
 
