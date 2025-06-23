@@ -605,6 +605,43 @@ these points is that since the tree was balnced before the insertion, after the 
 The main complication with deletion is that it decreases the height of the unbalanced node A by 1, and then our rebalancing algorithms decrement the height by another 1. This means that the rebalancing algorithms solve the balance issue at node A, but may cause imbalances to all its ancestors since the height before deletion was not retained. Lucky for us, the fix isn't too bad since in the worst case we can just rebalance all the ancestors of A(at most has O(log n) ancestors) and our rebalancing algorithms run in O(1). 
 
 
+## Proof that avl trees run in O(log n) for search, insert and delete(handwavy)
+In order to prove this, we must show that the height of an avl tree is O(log n) in the worst case, where n is the number of nodes.<br><br>
+We start off by assuming the worst possible avl trees we can imagine.<br> 
+The worst avl trees we can construct are the avl trees that have largest height for the least number of nodes and are still balanced.<br>
+Writing a recurrence relation for this is straight forward:<br>
+let the function s(h) be the tallest avl tree(maximum h) that you can make from the least number of nodes.<br>
+We have our base cases(we will need two, since we will construct other avl trees from our base cases and we need to represent the left and right heights):
+* s(0)=1, at height 0, we can only have the root node
+* s(1)=2 at height 1, the minimum number of nodes we can have is 2
+* s(h)=s(h-1)+s(h-2)+1, the left and right subtree can be constructed as the having an absolute height difference of 1(since we must retain balance, and consider the worst case) and are the worst case avl trees with maximum height and minimal number of nodes. The +1 is for the root node which contributes the one node that takes us from a height of h-1 to h.<br><br>
+If you think about the above hard enough, you will eventually see that it does construct the worst possible avl trees. Now we just have to take our recurrence relation and solve for h, instead of s(h).<br><br>
+The first obvservation we can make is that the recurrence relation is very similar to the fibonacci sequence, which is f(n)=f(n-1)+f(n-2). 
+
+| n        | 0  | 1  | 2  | 3  | 4  | 5  | 6   | 7   | 8   | 9   | 10  | 11  | 12  | 13  | 14  | 15  | 16  | 17  | 18   | 19   | 20   |
+|----------|----|----|----|----|----|----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|------|------|------|
+| f(n)   | 0  | 1  | 1  | 2  | 3  | 5  | 8   | 13  | 21  | 34  | 55  | 89  | 144 | 233 | 377 | 610 | 987 | 1597| 2584 | 4181 | 6765 |
+| s(n)     | 1  | 2  | 4  | 7  | 12 | 20 | 33  | 54  | 88  | 143 | 232 | 376 | 609 | 986 | 1596| 2583| 4180| 6764| 10945| 17710| 28656|
+
+Notice that our recurrence relation s(n) can be transformed into the fibonacci sequence by shifting by 3 and adding 1. A quick explanation for this
+is that term f(1) which is 1, is implicitly added to each consecutive term(encoded in the recursive definiton of f(n)) in f(n) for a total of n.   
+The recurrence relation s(n) does not have this term since the base cases for s(n) is f(n) shifted past this term. The +1 in s(n)=s(n-1)+s(n-2)+1, does the 
+job of adjusting for the missing f(1) from s(n), but is only added during the transitions between consecutive numbers. Any sequence of n numbers, will always have n-1 transitions, thus the +1 in s(n)=s(n-1)+s(n-1)+1 only accumulates to n-1, where f(1) in f(n)=f(n-1)+f(n-2) accumulates to n. In other words, this suggest that we can write s(n) in terms of f(n) in the following way:<br><br>
+$s(h)+1=f(h+3)$ (You can verify this relationship in the table above.) <br><br>
+Since we care about solving for the h in s(h), we can rewrite the equation above as:<br><br>
+$s(h)=f(h+3)-1$ (This means that if I can solve for the h in f(h+3) I can solve for the h in s(h), and remember, h is the maximum height for the minimum number of nodes in my avl tree, which is the worst case scenario heights I can have for avl trees.)<br><br>
+The fibonacci sequence famously has a closed form expression(can be derived with characteristic equation if interested):<br><br>
+$f(n)=\frac{1}{\sqrt{5}}(\frac{1+\sqrt{5}}{2})^n-\frac{1}{\sqrt{5}}(\frac{1-\sqrt{5}}{2})^n$<br><br>
+thus:<br><br>
+$s(h)=f(h+3)-1=\frac{1}{\sqrt{5}}(\frac{1+\sqrt{5}}{2})^{h+3}-\frac{1}{\sqrt{5}}(\frac{1-\sqrt{5}}{2})^{h+3}-1$<br><br>
+Since we only care about, about large values for h, notice that the term $\frac{1}{\sqrt{5}}(\frac{1-\sqrt{5}}{2})^{h+3}$ goes to zero for large h, and in the spirit of big O, we can ignore the constant -1, and the coefficient $\frac{1}{\sqrt{5}}$ as they provide minimal impact to our equation for large h. We can then say:<br><br>
+$s(h)\approx (\frac{1+\sqrt{5}}{2})^{h+3}$<br><br>
+Taking the log of both sides:<br><br>
+$log(s(h))\approx log((\frac{1+\sqrt{5}}{2})^{h+3})=(h+3)log(\frac{1+\sqrt{5}}{2})\approx .21h+.63$<br><br>
+s(h) is the minimum number of nodes for the tallest avl tree, we can say s(h)=m, to get: <br><br>
+$log(m)=.21h+.63 $ which implies the height of the tree is porpotional to the log of the minimum number of nodes $h=log(m) \in O(log(m))$<br><br>
+We can therefore conclude, that even our worst avl trees will have a height that is porpotional to the log of the number of nodes in the tree. 
+
 
 ## Attribution
 This repository contains derivative work based on course materials by Professor Stewart Weiss for CSCI 335 at Hunter College, CUNY, Spring 2019.
