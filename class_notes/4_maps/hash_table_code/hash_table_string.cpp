@@ -8,7 +8,8 @@
 
 enum class EntryState { EMPTY, OCCUPIED, DELETED };
 
-class HashTable {
+class HashTable 
+{
 private:
     std::vector<std::pair<std::string, std::string>> table;
     std::vector<EntryState> state;
@@ -16,12 +17,14 @@ private:
     int size;
     const double loadFactorThreshold = 0.7;
 
-    int hashFunction(const std::string &key) const {
+    int hashFunction(const std::string &key) const 
+    {
         std::hash<std::string> hasher;
         return hasher(key) % numBuckets;
     }
 
-    void rehash() {
+    void rehash() 
+    {
         int oldNumBuckets = numBuckets;
         numBuckets *= 2;
         std::vector<std::pair<std::string, std::string>> oldTable = table;
@@ -31,7 +34,8 @@ private:
         state = std::vector<EntryState>(numBuckets, EntryState::EMPTY);
         size = 0;
 
-        for (int i = 0; i < oldNumBuckets; ++i) {
+        for (int i = 0; i < oldNumBuckets; ++i) 
+        {
             if (oldState[i] == EntryState::OCCUPIED) {
                 insert(oldTable[i].first, oldTable[i].second);
             }
@@ -39,30 +43,34 @@ private:
     }
 
 public:
-    HashTable(int initialBuckets = 8) : numBuckets(initialBuckets), size(0) {
+    HashTable(int initialBuckets = 8) : numBuckets(initialBuckets), size(0) 
+    {
         table.resize(numBuckets);
         state.resize(numBuckets, EntryState::EMPTY);
     }
 
-    void insert(const std::string &key, const std::string &value) {
-        if ((double)size / numBuckets > loadFactorThreshold) {
-            rehash();
-        }
-
+    void insert(const std::string &key, const std::string &value) 
+    {
+        if ((double)size / numBuckets > loadFactorThreshold)    rehash();
+        
         int index = hashFunction(key);
         int startIdx = index;
         int firstDeletedIdx = -1;
 
-        while (state[index] != EntryState::EMPTY) {
-            if (state[index] == EntryState::OCCUPIED && table[index].first == key) {
+        while (state[index] != EntryState::EMPTY) 
+        {
+            if (state[index] == EntryState::OCCUPIED && table[index].first == key) 
+            {
                 table[index].second = value;
                 return;
             }
-            if (state[index] == EntryState::DELETED && firstDeletedIdx == -1) {
+            if (state[index] == EntryState::DELETED && firstDeletedIdx == -1) 
+            {
                 firstDeletedIdx = index;
             }
             index = (index + 1) % numBuckets;
-            if (index == startIdx) {
+            if (index == startIdx)
+            {
                 std::cout << "Table is full!\n";
                 return;
             }
@@ -74,12 +82,15 @@ public:
         ++size;
     }
 
-    void remove(const std::string &key) {
+    void remove(const std::string &key) 
+    {
         int index = hashFunction(key);
         int startIdx = index;
 
-        while (state[index] != EntryState::EMPTY) {
-            if (state[index] == EntryState::OCCUPIED && table[index].first == key) {
+        while (state[index] != EntryState::EMPTY) 
+        {
+            if (state[index] == EntryState::OCCUPIED && table[index].first == key) 
+            {
                 state[index] = EntryState::DELETED;
                 --size;
                 return;
@@ -89,31 +100,33 @@ public:
         }
     }
 
-    std::string search(const std::string &key) const {
+    std::string search(const std::string &key) const 
+    {
         int index = hashFunction(key);
         int startIdx = index;
 
-        while (state[index] != EntryState::EMPTY) {
-            if (state[index] == EntryState::OCCUPIED && table[index].first == key) {
+        while (state[index] != EntryState::EMPTY) 
+        {
+            if (state[index] == EntryState::OCCUPIED && table[index].first == key) 
                 return table[index].second;
-            }
+            
             index = (index + 1) % numBuckets;
             if (index == startIdx) break;
         }
         return "Key not found";
     }
 
-    void display() const {
+    void display() const 
+    {
         std::cout << "HashTable with " << numBuckets << " buckets:\n";
-        for (int i = 0; i < numBuckets; ++i) {
+        for (int i = 0; i < numBuckets; ++i) 
+        {
             std::cout << "Bucket " << i << ": ";
-            if (state[i] == EntryState::OCCUPIED) {
+            if (state[i] == EntryState::OCCUPIED) 
                 std::cout << "[" << table[i].first << ": " << table[i].second << "]\n";
-            } else if (state[i] == EntryState::DELETED) {
+            else if (state[i] == EntryState::DELETED)
                 std::cout << "[deleted]\n";
-            } else {
-                std::cout << "[empty]\n";
-            }
+            else std::cout << "[empty]\n";
         }
     }
 };

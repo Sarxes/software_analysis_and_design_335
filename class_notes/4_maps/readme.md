@@ -305,14 +305,14 @@ std::vector<bool> isOccupied;
 Now you're working with string keys, so functions like insert(key, value) and search(key) will use the string-based hash function and string comparisons.
 
 
-### Tombstoning in Hash Tables
+## Tombstoning in Hash Tables
 
 In open addressing (e.g., linear probing, quadratic probing, double hashing), tombstoning is the technique of marking a deleted entry with a special placeholder instead of clearing it.
 
 > Tombstone: “This slot used to be occupied, but is now deleted.”
 
 
-#### Example: Without Tombstones
+### Example: Without Tombstones
 
 1. Insert A → index 5
 2. Insert B → index 6 (collision with A)
@@ -321,18 +321,18 @@ Now delete A. If we clear index 5:
 - Searching for B hashes to index 5 (empty)
 - Search terminates early → B not found ❌
 
-#### With Tombstones
+### With Tombstones
 
 - Mark index 5 as a tombstone
 - Search continues to index 6 → B found ✅
 
-#### Behavior Summary
+### Behavior Summary
 - Tombstone = DELETED state (different from EMPTY and FILLED)
 - On **insert**: reuse tombstone slots
 - On **search**: skip tombstones, but don’t stop
 - On **delete**: mark as tombstone
 
-#### Downsides
+### Downsides
 - Performance degrades with many tombstones
 - Increases probe lengths
 - Solution: Periodic **rehashing** to clean them
@@ -403,7 +403,8 @@ Then:
 
 
 ## STL Maps
-In C++, std::unordered_map is a container from the Standard Template Library (STL) that stores key-value pairs in an unordered manner. Unlike std::map, which maintains elements in a sorted order, std::unordered_map uses a hash table to achieve faster lookups.
+In C++, std::unordered_map is a container from the Standard Template Library (STL) that stores key-value pairs in an unordered manner. Unlike std::map, which maintains elements in a sorted order, std::unordered_map uses a hash table to achieve faster lookups. One thing to note is that, for the most part, std::map can be used in the same exact way as std::unordered_map. Mechanically they are almost the same, but under the hood they are very different. std::map is implemented using a balanced binary search tree(similar to avl tree), and std::unordered_map is implemented using a hash map.
+That being said, in this section we will cover examples for std::unordered_map, but you can swap these examples with std::map, and it will work the same. 
 
 ### Key Features
 * **Unordered Storage:** Elements are not stored in any specific order.

@@ -4,14 +4,16 @@
 #include <utility> // For std::pair
 #include <string>
 
-class HashTable {
+class HashTable 
+{
 private:
     // Each bucket stores a list of key-value pairs
     std::vector<std::list<std::pair<int, std::string>>> table;
     int numBuckets; // Number of buckets
 
     // Hash function: computes an index for a given key
-    int hashFunction(int key) const {
+    int hashFunction(int key) const 
+    {
         return key % numBuckets;
     }
 
@@ -23,7 +25,8 @@ public:
     void insert(int key, const std::string &value) 
     {
         int index = hashFunction(key);
-        for (auto &pair : table[index]) {
+        for (auto &pair : table[index]) 
+        {
             if (pair.first == key) {
                 pair.second = value; // Update value if key already exists
                 return;
@@ -49,10 +52,9 @@ public:
     std::string search(int key) const 
     {
         int index = hashFunction(key);
-        for (const auto &pair : table[index]) {
-            if (pair.first == key) {
-                return pair.second;
-            }
+        for (const auto &pair : table[index]) 
+        {
+            if (pair.first == key)  return pair.second; 
         }
         return "Key not found";
     }
