@@ -190,6 +190,7 @@ Index 9: -
 Two hash functions:
 - `h1(key) = key % 10`
 - `h2(key) = 7 - (key % 7)` (secondary hash must be non-zero)
+  - note: second hash function is usally of the `h2(key) = r - (key % r)` where r is a prime    number smaller than the table size.  
 
 Probing sequence:  
 `index = (h1(key) + i * h2(key)) % table_size`
