@@ -51,11 +51,11 @@ public:
         {
             child = hole * 2; // left child of hole
             if (child != current_size_ && array_[child + 1] < array_[child])
-            // right child exists and is smaller than left , so make child its index
-            child ++;
+                // right child exists and is smaller than left , so make child its index
+                child ++;
             if(array_[child] < temp)
-            // copy smaller child into hole
-            array_[hole] = array_[child];
+                // copy smaller child into hole
+                array_[hole] = array_[child];
             else break; // both children are bigger than hole
             // repeat with hold being child that was copied up
             hole = child;
