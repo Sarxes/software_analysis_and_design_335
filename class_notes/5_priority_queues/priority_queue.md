@@ -127,15 +127,15 @@ $k-(2^d − 1)-1 = k − 2^d$
 
 How many nodes are to the right of k in level d? It must be $2^d$ less the number of nodes up to and
 including k, which is<br><br>
-2^d − (k − 2^d) − 1 = 2(2^dd) − k − 1 = 2^{d+1} − k − 1<br><br>
+$2^d − (k − 2^d) − 1 = 2(2^dd) − k − 1 = 2^{d+1} − k − 1$<br><br>
 Each child to the left of node k contributes 2 children in level d + 1 to the left of node k's left child,
 so there are 2(k-2^d) nodes to the left of leftchild(k) in level d + 1. Since there are 2^{d+1}-k-1 nodes
 to the right of node k in level d, the index of the left child of node k is:<br><br>
-leftchild(k) = k + (2^{d+1})-k-1 + 2(k-2^d) + 1<br>
-= 2d+1 − 1 + 2k − 2^{d+1} + 1<br>
+leftchild(k) = $k + (2^{d+1})-k-1 + 2(k-2^d) + 1$<br>
+= $2^{d+1} − 1 + 2k − 2^{d+1} + 1$<br>
 = 2k <br><br>
 
-The right child, if it exists, must have index 2k+1. Finally, since lef tchild(k) = 2k and rightchild(k) =
+The right child, if it exists, must have index 2k+1. Finally, since leftchild(k) = 2k and rightchild(k) =
 2k + 1, it follows that parent(k) = $\lfloor k/2 \rfloor$.
 
 This theorem establishes that the index of a node is all we need to find its children or its parent,
