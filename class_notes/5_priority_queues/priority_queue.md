@@ -344,25 +344,25 @@ and so on, until there is but $1 = 2^0 = 2^{h−h}$ node at height h. In general
 height $h − k$. Since nodes at height 0 add nothing to the sum, the total height sum S is:
 
 $$
-S = \sum_{k=1}^{h} k \cdot 2^{h-k} \tag{1}
+S = \sum_{k=1}^{h} k \cdot 2^{h-k} 
 $$
 
 Doubling both sides gives:
 
 $$
-2S = \sum_{k=1}^{h} k \cdot 2^{h-k+1} \tag{2}
+2S = \sum_{k=1}^{h} k \cdot 2^{h-k+1} 
 $$
 
 Separate out the (k = 1) term:
 
 $$
-2S = 2^h + \sum_{k=2}^{h} k \cdot 2^{h-k+1} \tag{3}
+2S = 2^h + \sum_{k=2}^{h} k \cdot 2^{h-k+1} 
 $$
 
 And also write:
 
 $$
-S = h + \sum_{k=1}^{h-1} k \cdot 2^{h-k} \tag{4}
+S = h + \sum_{k=1}^{h-1} k \cdot 2^{h-k} 
 $$
 
 Now subtract Eq. (4) from Eq. (3):
