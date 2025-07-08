@@ -15,6 +15,5 @@
 ## Topics for final(07/08)
 * Hash maps/iterators (chp4)
 * Priority queues (heaps)(chp5)
-* make/cmake - lambda - threads - smart pointers
-* Graphs
-* quick intro to p and np(on 07/07)(15 mins)
+* Graphs(up to and not including graph traversal)
+
